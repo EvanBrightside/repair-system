@@ -19,13 +19,13 @@ gem 'dotenv-rails'
 
 # ActiveAdmin
 gem 'activeadmin'
+gem 'arctic_admin'
 gem 'cancan'
 gem 'devise'
 gem 'activeadmin-searchable_select'
 gem 'active_admin_datetimepicker'
 gem "active_admin_import" , github: "activeadmin-plugins/active_admin_import"
-
-gem 'arctic_admin'
+gem "active_admin-sortable_tree", "~> 2.0.0"
 
 # Scheduled jobs
 gem 'whenever', require: false

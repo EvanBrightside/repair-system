@@ -14,5 +14,3 @@
 //= require activestorage
 //= require turbolinks
 //= require_tree .
-//= require arctic_admin/base
-//= require active_admin/searchable_select
