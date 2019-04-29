@@ -1,4 +1,4 @@
-set :application, 'repair-system'
+set :application, 'repairsystem'
 set :repo_url, 'git@github.com:EvanBrightside/repair-system.git'
 
 append :linked_files, 'config/database.yml', 'config/secrets.yml', '.env'

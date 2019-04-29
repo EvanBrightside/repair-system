@@ -1,4 +1,4 @@
-server 'repairsystem.ivanzabrodin.com', port: '22251', user: 'app', roles: %w[web app db]
+server 'repairsystem.ivanzabrodin.com', user: 'app', roles: %w[web app db]
 
 set :keep_releases, 3
 set :rails_env, :production

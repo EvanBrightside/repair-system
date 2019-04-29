@@ -108,6 +108,8 @@ GEM
       sshkit (>= 1.9.0)
     capistrano-bundler (1.5.0)
       capistrano (~> 3.1)
+    capistrano-db-tasks (0.6)
+      capistrano (>= 3.0.0)
     capistrano-rails (1.4.0)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
@@ -203,6 +205,9 @@ GEM
     http_parser.rb (0.6.0)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
+    image_processing (1.8.0)
+      mini_magick (>= 4.9.3, < 5)
+      ruby-vips (>= 2.0.13, < 3)
     inherited_resources (1.10.0)
       actionpack (>= 5.0, < 6.0)
       has_scope (~> 0.6)
@@ -359,6 +364,8 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 1.6)
     ruby-progressbar (1.10.0)
+    ruby-vips (2.0.13)
+      ffi (~> 1.9)
     ruby_dep (1.5.0)
     rubyzip (1.2.2)
     sass (3.7.4)
@@ -464,6 +471,7 @@ DEPENDENCIES
   cancan
   capistrano
   capistrano-bundler
+  capistrano-db-tasks
   capistrano-rails
   capistrano-rvm
   capistrano-sidekiq
@@ -479,6 +487,7 @@ DEPENDENCIES
   faker
   guard
   guard-livereload (~> 2.5)
+  image_processing (~> 1.2)
   jbuilder (~> 2.5)
   jquery-rails
   letter_opener

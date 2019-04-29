@@ -13,6 +13,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
+gem 'image_processing', '~> 1.2'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'dotenv-rails'
@@ -24,14 +25,14 @@ gem 'cancan'
 gem 'devise'
 gem 'activeadmin-searchable_select'
 gem 'active_admin_datetimepicker'
-gem "active_admin_import" , github: "activeadmin-plugins/active_admin_import"
-gem "active_admin-sortable_tree", "~> 2.0.0"
+gem 'active_admin_import' , github: 'activeadmin-plugins/active_admin_import'
+gem 'active_admin-sortable_tree', '~> 2.0.0'
 
 # Scheduled jobs
 gem 'whenever', require: false
 
 gem 'enumerize'
-
+gem 'capistrano-db-tasks', require: false
 gem 'jquery-rails'
 gem 'slim-rails'
 
