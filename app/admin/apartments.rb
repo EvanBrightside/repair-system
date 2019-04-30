@@ -1,7 +1,8 @@
 ActiveAdmin.register Apartment do
   permit_params :owner, :address, :property_name, :property_developer,
                 :status, :number_of_rooms, :floor, :area_dimension,
-                :floor_plan, room_ids: [], unit_plans: []
+                :floor_plan, :unit_plan, room_ids: [], unit_photos: [],
+                documents: []
 
   member_action :delete_unit_plan, method: :delete do
    @unit_plan = ActiveStorage::Attachment.find(params[:id])
@@ -12,6 +13,18 @@ ActiveAdmin.register Apartment do
   member_action :delete_floor_plan, method: :delete do
    @floor_plan = ActiveStorage::Attachment.find(params[:id])
    @floor_plan.purge
+   redirect_back(fallback_location: edit_admin_apartment_path)
+  end
+
+  member_action :delete_unit_photo, method: :delete do
+   @unit_photo = ActiveStorage::Attachment.find(params[:id])
+   @unit_photo.purge
+   redirect_back(fallback_location: edit_admin_apartment_path)
+  end
+
+  member_action :delete_document, method: :delete do
+   @document = ActiveStorage::Attachment.find(params[:id])
+   @document.purge
    redirect_back(fallback_location: edit_admin_apartment_path)
   end
 
@@ -37,16 +50,44 @@ ActiveAdmin.register Apartment do
           end
         end
       end
-      row 'Unit Plan', :unit_plans  do
+      row :unit_plan do |apartment|
         ul do
-          apartment.unit_plans.each do |unit_plan|
+          li do
+            link_to (image_tag (apartment.unit_plan).variant(resize: '500')), rails_blob_path(apartment.unit_plan), target: :blank
+          end
+          li do
+            span link_to 'Download', apartment.unit_plan, download: apartment.unit_plan
+            span ' | '
+            span link_to 'Remove', delete_unit_plan_admin_apartment_path(apartment.unit_plan.id), method: :delete, data: { confirm: 'Are you sure?' }
+          end
+        end
+      end
+      row 'Unit Photos', :unit_photos  do
+        ul do
+          apartment.unit_photos.each do |unit_photo|
             li do
-              link_to (image_tag unit_plan.variant(resize: '500')), rails_blob_path(unit_plan), target: :blank
+              link_to (image_tag unit_photo.variant(resize: '500')), rails_blob_path(unit_photo), target: :blank
             end
             li do
-              span link_to 'Download', unit_plan, download: unit_plan
+              span link_to 'Download', unit_photo, download: unit_photo
               span ' | '
-              span link_to 'Remove', delete_unit_plan_admin_apartment_path(unit_plan.id), method: :delete, data: { confirm: 'Are you sure?' }
+              span link_to 'Remove', delete_unit_photo_admin_apartment_path(unit_photo.id), method: :delete, data: { confirm: 'Are you sure?' }
+            end
+          end
+        end
+      end
+      row 'Documents', :documents  do
+        ul do
+          apartment.documents.each do |document|
+            li do
+              if document.previewable?
+                link_to (image_tag document.preview(resize: '500')), rails_blob_path(document), target: :blank
+              end
+            end
+            li do
+              span link_to 'Download', document, download: document
+              span ' | '
+              span link_to 'Remove', delete_document_admin_apartment_path(document.id), method: :delete, data: { confirm: 'Are you sure?' }
             end
           end
         end
@@ -65,7 +106,9 @@ ActiveAdmin.register Apartment do
       f.input :floor
       f.input :area_dimension
       f.input :floor_plan, as: :file
-      f.input :unit_plans, as: :file, input_html: { multiple: true }
+      f.input :unit_plan, as: :file
+      f.input :unit_photos, as: :file, input_html: { multiple: true }
+      f.input :documents, as: :file, input_html: { multiple: true }
     end
     f.actions
   end
