@@ -149,6 +149,33 @@ ActiveAdmin.setup do |config|
 
   # config.before_action :set_locale
 
+  config.namespace :admin do |admin|
+   admin.build_menu :utility_navigation do |menu|
+     menu.add label: I18n.t('language.name'),:url => proc { url_for(:locale => 'en') }, id: 'lang'
+     # do |lang|
+     #   lang.add label: 'EN',:url => proc { url_for(:locale => 'en') }, id: 'i18n-en', priority: 1
+     #   lang.add label: 'RU',:url => proc { url_for(:locale => 'ru') }, id: 'i18n-ru', priority: 2
+     # end
+     admin.add_current_user_to_menu  menu
+     admin.add_logout_button_to_menu menu
+   end
+  end
+
+
+  # <li>
+  #   <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+  #       <%= t('language.name') %>
+  #       <span class="caret"></span>
+  #   </a>
+  #   <ul class="dropdown-menu" role="menu">
+  #     <% I18n.available_locales.each do |lang| %>
+  #       <li>
+  #         <%= link_to t(lang), locale: lang %>
+  #       </li>
+  #     <% end %>
+  #   </ul>
+  # </li>
+
   # == Localize Date/Time Format
   #
   # Set the localize format to display dates and times.

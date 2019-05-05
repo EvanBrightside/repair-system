@@ -1,4 +1,5 @@
 ActiveAdmin.register Room do
+  menu priority: 3
   permit_params :name, :area_dimension, :status, :apartment_id,
                 tasks_attributes: [:id, :name, :description, :status, :_destroy]
 

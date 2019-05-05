@@ -1,4 +1,5 @@
 ActiveAdmin.register Task do
+  menu priority: 4
   permit_params :name, :description, :room_id
 
 # See permitted parameters documentation:

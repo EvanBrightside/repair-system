@@ -1,4 +1,5 @@
 ActiveAdmin.register Apartment do
+  menu priority: 2
   permit_params :owner, :address, :property_name, :property_developer,
                 :status, :number_of_rooms, :floor, :area_dimension,
                 :floor_plan, :unit_plan, unit_photos: [],
