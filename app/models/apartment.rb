@@ -11,4 +11,5 @@ class Apartment < ApplicationRecord
   enumerize :status, in: %i[to_do in_progress done]
 
   has_many :rooms, dependent: :nullify
+  accepts_nested_attributes_for :rooms, allow_destroy: true
 end

@@ -1,0 +1,13 @@
+- if apt.present?
+  div.panel_contents
+    h3 Rooms
+    ul
+      - apt.rooms.each do |room|
+        li.panel_box
+          div.category_icon.fa.fa-angle-right
+          div.category_name
+            = link_to room.name, admin_room_path(room.id), target: :blank
+          div
+            = link_to "Add a task", new_admin_task_path
+        - if room.tasks and room.tasks.count > 0
+          = render 'tasks_partial', { room: room }

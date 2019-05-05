@@ -1,0 +1,10 @@
+- if room.present?
+  div.panel_contents
+    h3 Tasks
+    ul
+      - room.tasks.each do |task|
+        li.panel_box
+          div.add_info
+            = link_to task.name, admin_task_path(task.id), target: :blank
+          div
+            = "Status: #{task.status}"

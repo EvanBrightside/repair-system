@@ -1,8 +1,8 @@
 ActiveAdmin.register Apartment do
   permit_params :owner, :address, :property_name, :property_developer,
                 :status, :number_of_rooms, :floor, :area_dimension,
-                :floor_plan, :unit_plan, room_ids: [], unit_photos: [],
-                documents: []
+                :floor_plan, :unit_plan, unit_photos: [],
+                documents: [], rooms_attributes: [:id, :name, :area_dimension, :status, :_destroy]
 
   member_action :delete_unit_plan, method: :delete do
    @unit_plan = ActiveStorage::Attachment.find(params[:id])
@@ -109,6 +109,14 @@ ActiveAdmin.register Apartment do
       f.input :unit_plan, as: :file
       f.input :unit_photos, as: :file, input_html: { multiple: true }
       f.input :documents, as: :file, input_html: { multiple: true }
+    end
+
+    f.inputs 'Rooms' do
+      f.has_many :rooms, heading: '', allow_destroy: true, new_record: 'Add a room' do |ff|
+        ff.input :name
+        ff.input :area_dimension
+        ff.input :status
+      end
     end
     f.actions
   end
