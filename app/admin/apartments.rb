@@ -14,7 +14,11 @@ ActiveAdmin.register Apartment do
   show do
     attributes_table do
       row :owner
-      row :address
+      row :address do
+        span apartment.address
+        span ' | '
+        span link_to 'Open Google Map', ("https://maps.google.com/maps?q=#{apartment.geo_coords(apartment.address)[:lat]}, #{apartment.geo_coords(apartment.address)[:lon]}"), class: "popup-geo"
+      end
       row :property_name
       row :property_developer
       row :status

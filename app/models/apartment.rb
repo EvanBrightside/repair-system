@@ -11,4 +11,17 @@ class Apartment < ApplicationRecord
 
   has_many :rooms, dependent: :nullify
   accepts_nested_attributes_for :rooms, allow_destroy: true
+
+  def geo_coords(address)
+    results = Geocoder.search(address)
+
+    return nil if results.empty?
+
+    coords = results.first.coordinates
+
+    {
+      lat: coords.first.to_s,
+      lon: coords.last.to_s
+    }
+  end
 end
