@@ -93,7 +93,11 @@ ActiveAdmin.register Apartment do
       ul class: 'attached_preview' do
         f.object.documents.map do |document|
           div do
-            li image_tag(document.preview(resize: '100x100!'))
+            if document.previewable?
+              li image_tag(document.preview(resize: '100x100!'))
+            else
+              li link_to 'Download file', rails_blob_path(document)
+            end
             li link_to 'Remove', delete_elem_admin_apartment_path(document.id), method: :delete, data: { confirm: 'Are you sure?' }
           end
         end
