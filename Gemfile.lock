@@ -176,7 +176,6 @@ GEM
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     ffi (1.10.0)
-    flex-slider-rails (2.7.0)
     font-awesome-sass (5.6.1)
       sassc (>= 1.11)
     formatador (0.2.5)
@@ -488,7 +487,6 @@ DEPENDENCIES
   enumerize
   factory_bot_rails
   faker
-  flex-slider-rails
   geocoder
   guard
   guard-livereload (~> 2.5)
