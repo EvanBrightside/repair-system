@@ -8,14 +8,14 @@ ActiveAdmin.register Room do
   member_action :delete_elem, method: :delete do
     elem = ActiveStorage::Attachment.find(params[:id])
     elem.purge
-    redirect_back(fallback_location: edit_admin_apartment_path)
+    redirect_back(fallback_location: edit_admin_room_path)
   end
 
   collection_action :destroy_multiple, method: :delete do
     ActiveStorage::Attachment.find(params[:elem_ids]).each do |elem|
       elem.purge
     end
-    redirect_back(fallback_location: edit_admin_apartment_path(params[:resource_id]))
+    redirect_back(fallback_location: edit_admin_room_path(params[:resource_id]))
   end
 
   controller do
