@@ -100,7 +100,6 @@ ActiveAdmin.register Apartment do
               else
                 li link_to 'Download image', rails_blob_path(plan), target: :blank
               end
-              # span check_box_tag "plan_ids[]", plan.id, false, class: 'selectable'
               li link_to 'Remove', delete_elem_admin_apartment_path(plan.id), method: :delete, data: { confirm: 'Are you sure?' }
             end
           end
@@ -109,40 +108,40 @@ ActiveAdmin.register Apartment do
       end
 
       f.input :photos, as: :file, input_html: { multiple: true }
-      if f.object.plans.attached?
-        td do
-          ul class: 'attached_preview' do
-            f.object.photos.each do |photo|
-              div class: 'attached_element' do
-                if photo.variable?
-                  div class: 'zoom-gallery' do
-                    li link_to (image_tag(photo.variant(resize: '200x200!'))), rails_blob_path(photo), target: :blank
-                  end
-                else
-                  li link_to 'Download image', rails_blob_path(photo), target: :blank
+      if f.object.photos.attached?
+        ul class: 'attached_preview' do
+          f.object.photos.each do |photo|
+            div class: 'attached_element' do
+              if photo.variable?
+                div class: 'zoom-gallery' do
+                  li link_to (image_tag(photo.variant(resize: '200x200!'))), rails_blob_path(photo), target: :blank
                 end
-                li link_to 'Remove', delete_elem_admin_apartment_path(photo.id), method: :delete, data: { confirm: 'Are you sure?' }
+              else
+                li link_to 'Download image', rails_blob_path(photo), target: :blank
               end
+              # span check_box_tag "checked_ids[]", photo.id, false, class: 'selectable'
+              span link_to 'Remove', delete_elem_admin_apartment_path(photo.id), method: :delete, data: { confirm: 'Are you sure?' }
             end
           end
         end
-        li link_to 'Remove all photos', destroy_multiple_admin_apartments_path(elem_ids: f.object.photos.ids, resource_id: f.object.id), method: :delete, class: 'button del_button'
+        # span link_to 'Remove checked photos', destroy_multiple_admin_apartments_path(elem_ids: params[:checked_ids], resource_id: f.object.id), method: :delete, class: 'button del_button'
+        span link_to 'Remove all photos', destroy_multiple_admin_apartments_path(elem_ids: f.object.photos.ids, resource_id: f.object.id), method: :delete, class: 'button del_button'
       end
 
       f.input :documents, as: :file, input_html: { multiple: true }
-      ul class: 'attached_preview' do
-        f.object.documents.map do |document|
-          div class: 'attached_element' do
-            if document.previewable?
-              li link_to (image_tag(document.preview(resize: '200x200!'))), rails_blob_path(document), class: 'iframe-popup'
-            else
-              li link_to 'Download file', rails_blob_path(document), target: :blank
+      if f.object.documents.attached?
+        ul class: 'attached_preview' do
+          f.object.documents.map do |document|
+            div class: 'attached_element' do
+              if document.previewable?
+                li link_to (image_tag(document.preview(resize: '200x200!'))), rails_blob_path(document), class: 'iframe-popup'
+              else
+                li link_to 'Download file', rails_blob_path(document), target: :blank
+              end
+              li link_to 'Remove', delete_elem_admin_apartment_path(document.id), method: :delete, data: { confirm: 'Are you sure?' }
             end
-            li link_to 'Remove', delete_elem_admin_apartment_path(document.id), method: :delete, data: { confirm: 'Are you sure?' }
           end
         end
-      end
-      if f.object.plans.attached?
         li link_to 'Remove all documents', destroy_multiple_admin_apartments_path(elem_ids: f.object.documents.ids, resource_id: f.object.id), method: :delete, class: 'button del_button'
       end
     end

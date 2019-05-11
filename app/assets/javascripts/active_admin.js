@@ -2,6 +2,11 @@
 //= require active_admin/searchable_select
 //= require active_admin/sortable
 //= require magnific-popup
+//= require select_all
+
+$(function() {
+  $("#selectAll").select_all();
+});
 
 $(document).ready(function() {
 	$('.popup-photos').magnificPopup({

@@ -27,6 +27,7 @@ gem 'activeadmin-searchable_select'
 gem 'active_admin_datetimepicker'
 gem 'active_admin_import' , github: 'activeadmin-plugins/active_admin_import'
 gem 'active_admin-sortable_tree', '~> 2.0.0'
+gem 'select_all-rails'
 
 # Scheduled jobs
 gem 'whenever', require: false
