@@ -176,6 +176,7 @@ GEM
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     ffi (1.10.0)
+    flex-slider-rails (2.7.0)
     font-awesome-sass (5.6.1)
       sassc (>= 1.11)
     formatador (0.2.5)
@@ -284,7 +285,6 @@ GEM
     parser (2.6.2.1)
       ast (~> 2.4.0)
     pg (1.1.4)
-    photoswipe-rails (4.1.2)
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -488,6 +488,7 @@ DEPENDENCIES
   enumerize
   factory_bot_rails
   faker
+  flex-slider-rails
   geocoder
   guard
   guard-livereload (~> 2.5)
@@ -500,7 +501,6 @@ DEPENDENCIES
   meta_request
   mini_magick
   pg (>= 0.18, < 2.0)
-  photoswipe-rails
   pry
   pry-rails
   puma (~> 3.11)

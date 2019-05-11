@@ -6,9 +6,24 @@ ActiveAdmin.register Apartment do
                 rooms_attributes: [:id, :name, :area_dimension, :status, :_destroy]
 
   member_action :delete_elem, method: :delete do
-    @elem = ActiveStorage::Attachment.find(params[:id])
-    @elem.purge
+    elem = ActiveStorage::Attachment.find(params[:id])
+    elem.purge
     redirect_back(fallback_location: edit_admin_apartment_path)
+  end
+
+  collection_action :destroy_multiple, method: :delete do
+    ActiveStorage::Attachment.find(params[:elem_ids]).each do |elem|
+      elem.purge
+    end
+    redirect_back(fallback_location: edit_admin_apartment_path(params[:resource_id]))
+  end
+
+  controller do
+    def update
+      update! do |format|
+        format.html { redirect_to edit_admin_apartment_path }
+      end
+    end
   end
 
   show do
@@ -16,8 +31,10 @@ ActiveAdmin.register Apartment do
       row :owner
       row :address do
         span apartment.address
-        span ' | '
-        span link_to 'Open Google Map', ("https://maps.google.com/maps?q=#{apartment.geo_coords(apartment.address)[:lat]}, #{apartment.geo_coords(apartment.address)[:lon]}"), class: "popup-geo"
+        unless apartment.geo_coords(apartment.address).nil?
+          span ' | '
+          span link_to 'Open Google Map', ("https://maps.google.com/maps?q=#{apartment.geo_coords(apartment.address)[:lat]}, #{apartment.geo_coords(apartment.address)[:lon]}"), class: "popup-geo"
+        end
       end
       row :property_name
       row :property_developer
@@ -26,7 +43,7 @@ ActiveAdmin.register Apartment do
       row :floor
       row :area_dimension
       row :plans do
-        ul do
+        ul class: 'show_element' do
           apartment.plans.each do |plan|
             span class: 'popup-plans' do
               if plan.variable?
@@ -37,7 +54,7 @@ ActiveAdmin.register Apartment do
         end
       end
       row :photos  do
-        ul do
+        ul class: 'show_element' do
           apartment.photos.each do |photo|
             span class: 'zoom-gallery' do
               if photo.variable?
@@ -48,7 +65,7 @@ ActiveAdmin.register Apartment do
         end
       end
       row 'Documents', :documents  do
-        ul do
+        ul class: 'show_element' do
           apartment.documents.each do |document|
             span do
               if document.previewable?
@@ -67,40 +84,66 @@ ActiveAdmin.register Apartment do
       f.input :address
       f.input :property_name
       f.input :property_developer
-      f.input :status
+      f.input :status, include_blank: false
       f.input :number_of_rooms
       f.input :floor
       f.input :area_dimension
       f.input :plans, as: :file, input_html: { multiple: true }
-      ul class: 'attached_preview' do
-        f.object.plans.map do |plan|
-          div do
-            li image_tag(plan.variant(resize: '100x100!'))
-            li link_to 'Remove', delete_elem_admin_apartment_path(plan.id), method: :delete, data: { confirm: 'Are you sure?' }
+      if f.object.plans.attached?
+        div class: 'attached_preview' do
+          f.object.plans.each do |plan|
+            div class: 'attached_element' do
+              if plan.variable?
+                div class: 'zoom-gallery' do
+                  li link_to (image_tag(plan.variant(resize: '200x200!'))), rails_blob_path(plan)
+                end
+              else
+                li link_to 'Download image', rails_blob_path(plan), target: :blank
+              end
+              # span check_box_tag "plan_ids[]", plan.id, false, class: 'selectable'
+              li link_to 'Remove', delete_elem_admin_apartment_path(plan.id), method: :delete, data: { confirm: 'Are you sure?' }
+            end
           end
         end
+        li link_to 'Remove all plans', destroy_multiple_admin_apartments_path(elem_ids: f.object.plans.ids, resource_id: f.object.id), method: :delete, class: 'button del_button'
       end
+
       f.input :photos, as: :file, input_html: { multiple: true }
-      ul class: 'attached_preview' do
-        f.object.photos.map do |photo|
-          div do
-            li image_tag(photo.variant(resize: '100x100!'))
-            li link_to 'Remove', delete_elem_admin_apartment_path(photo.id), method: :delete, data: { confirm: 'Are you sure?' }
+      if f.object.plans.attached?
+        td do
+          ul class: 'attached_preview' do
+            f.object.photos.each do |photo|
+              div class: 'attached_element' do
+                if photo.variable?
+                  div class: 'zoom-gallery' do
+                    li link_to (image_tag(photo.variant(resize: '200x200!'))), rails_blob_path(photo), target: :blank
+                  end
+                else
+                  li link_to 'Download image', rails_blob_path(photo), target: :blank
+                end
+                li link_to 'Remove', delete_elem_admin_apartment_path(photo.id), method: :delete, data: { confirm: 'Are you sure?' }
+              end
+            end
           end
         end
+        li link_to 'Remove all photos', destroy_multiple_admin_apartments_path(elem_ids: f.object.photos.ids, resource_id: f.object.id), method: :delete, class: 'button del_button'
       end
+
       f.input :documents, as: :file, input_html: { multiple: true }
       ul class: 'attached_preview' do
         f.object.documents.map do |document|
-          div do
+          div class: 'attached_element' do
             if document.previewable?
-              li image_tag(document.preview(resize: '100x100!'))
+              li link_to (image_tag(document.preview(resize: '200x200!'))), rails_blob_path(document), class: 'iframe-popup'
             else
-              li link_to 'Download file', rails_blob_path(document)
+              li link_to 'Download file', rails_blob_path(document), target: :blank
             end
             li link_to 'Remove', delete_elem_admin_apartment_path(document.id), method: :delete, data: { confirm: 'Are you sure?' }
           end
         end
+      end
+      if f.object.plans.attached?
+        li link_to 'Remove all documents', destroy_multiple_admin_apartments_path(elem_ids: f.object.documents.ids, resource_id: f.object.id), method: :delete, class: 'button del_button'
       end
     end
 
@@ -108,7 +151,7 @@ ActiveAdmin.register Apartment do
       f.has_many :rooms, heading: '', allow_destroy: true, new_record: 'Add a room' do |ff|
         ff.input :name
         ff.input :area_dimension
-        ff.input :status
+        ff.input :status, include_blank: false
       end
     end
     f.actions

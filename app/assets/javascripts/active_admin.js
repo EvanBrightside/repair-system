@@ -2,7 +2,6 @@
 //= require active_admin/searchable_select
 //= require active_admin/sortable
 //= require magnific-popup
-//= require photoswipe
 
 $(document).ready(function() {
 	$('.popup-photos').magnificPopup({
@@ -78,4 +77,4 @@ $(document).ready(function() {
 
 		fixedContentPos: false
 	});
-})
+});

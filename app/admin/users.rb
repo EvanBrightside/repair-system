@@ -1,6 +1,14 @@
 ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation
 
+  controller do
+    def update
+      update! do |format|
+        format.html { redirect_to edit_admin_user_path }
+      end
+    end
+  end
+
   index do
     selectable_column
     id_column

@@ -2,24 +2,38 @@
 @import "active_admin/searchable_select";
 @import "active_admin/sortable";
 @import "magnific-popup";
-@import "photoswipe";
+
+.selectable {
+  margin-bottom: -2px;
+}
+
+.show_element {
+  max-width: 500px;
+}
 
 .attached_preview {
   display: flex;
-  padding-left: 25%;
-  padding-bottom: 2%;
-}
-
-.has_many_add {
   margin-left: 25%;
+  padding-bottom: 2%;
+  width: 615px;
+  overflow-x: scroll;
 }
 
+.has_many_add, .del_button,
 .has_many_remove {
   margin-left: 25%;
 }
 
+.del_button {
+  margin-bottom: 10px;
+}
+
 legend {
   padding-left: 25%;
+}
+
+.attached_element {
+  padding-right: 5px;
 }
 
 .category_name {
@@ -34,10 +48,12 @@ legend {
   display: -webkit-box;
 }
 
-.panel {
+.sub_panel {
   margin-top: 1%;
+  padding-left: 20px;
 }
-.panel_contents {
+
+.main_contents {
   margin-top: 8px;
   margin-bottom: 5px;
   margin-left: 30px;
@@ -85,6 +101,10 @@ body.index {
 
 .image-source-link {
 	color: #98C3D1;
+}
+
+.mfp-wrap {
+  cursor: default;
 }
 
 .mfp-with-zoom .mfp-container,

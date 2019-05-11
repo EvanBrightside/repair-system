@@ -13,7 +13,7 @@ ActiveAdmin.register_page "Dashboard" do
                 div link_to("#{apt.property_name} / #{apt.property_developer}", admin_apartment_path(apt)), class: 'category_name'
                 div link_to("Add a room", new_admin_room_path)
               end
-              div class: "panel" do
+              div class: "sub_panel" do
                 if apt.rooms and apt.rooms.count > 0
                   render 'rooms_partial', { apt: apt }
                 end

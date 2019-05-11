@@ -7,7 +7,7 @@ class Apartment < ApplicationRecord
   has_many_attached :photos
   has_many_attached :documents
 
-  enumerize :status, in: %i[to_do in_progress done]
+  enumerize :status, in: %i[to_do in_progress done], default: :to_do
 
   has_many :rooms, dependent: :nullify
   accepts_nested_attributes_for :rooms, allow_destroy: true

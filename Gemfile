@@ -87,5 +87,4 @@ gem 'carrierwave'
 gem 'mini_magick'
 gem 'tzinfo-data', platforms: %w[mingw mswin x64_mingw jruby]
 gem 'magnific-popup-rails'
-gem 'photoswipe-rails'
 gem 'geocoder'
