@@ -1,4 +1,4 @@
-# REPAIR ADMINISTRATION SYSTEM
+# REPAIR ADMINISTRATIVE SYSTEM
 
 ## Setup
 * git clone `git@github.com:EvanBrightside/repair-system.git`
