@@ -21,7 +21,7 @@ ActiveAdmin.register Apartment do
   controller do
     def update
       update! do |format|
-        format.html { redirect_to edit_admin_apartment_path }
+        format.html { redirect_to edit_admin_apartment_path(@apartment.id) }
       end
     end
   end

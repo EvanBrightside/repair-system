@@ -4,10 +4,23 @@ ActiveAdmin.register Subtask do
                 :deadline, :author, :executor,
                 :task_id, photos: [], documents: []
 
+  member_action :delete_elem, method: :delete do
+    elem = ActiveStorage::Attachment.find(params[:id])
+    elem.purge
+    redirect_back(fallback_location: edit_admin_apartment_path)
+  end
+
+  collection_action :destroy_multiple, method: :delete do
+    ActiveStorage::Attachment.find(params[:elem_ids]).each do |elem|
+      elem.purge
+    end
+    redirect_back(fallback_location: edit_admin_apartment_path(params[:resource_id]))
+  end
+
   controller do
     def update
       update! do |format|
-        format.html { redirect_to edit_admin_task_path }
+        format.html { redirect_to edit_admin_task_path(@subtask.id) }
       end
     end
   end

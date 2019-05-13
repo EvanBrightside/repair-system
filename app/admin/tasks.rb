@@ -25,7 +25,7 @@ ActiveAdmin.register Task do
   controller do
     def update
       update! do |format|
-        format.html { redirect_to edit_admin_task_path }
+        format.html { redirect_to edit_admin_task_path(@task.id) }
       end
     end
   end
