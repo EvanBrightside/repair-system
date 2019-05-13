@@ -18,14 +18,6 @@ ActiveAdmin.register Apartment do
     redirect_back(fallback_location: edit_admin_apartment_path(params[:resource_id]))
   end
 
-  # controller do
-  #   def update
-  #     update! do |format|
-  #       format.html { redirect_to edit_admin_apartment_path(@apartment.id) }
-  #     end
-  #   end
-  # end
-
   show do
     attributes_table do
       row :owner

@@ -2,7 +2,8 @@ ActiveAdmin.register Subtask do
   menu parent: "Apartments", priority: 3
   permit_params :name, :description, :status,
                 :deadline, :author, :executor,
-                :task_id, photos: [], documents: []
+                :task_id, render_photos: [],
+                customer_photos: [], documents: []
 
   member_action :delete_elem, method: :delete do
     elem = ActiveStorage::Attachment.find(params[:id])
@@ -16,14 +17,6 @@ ActiveAdmin.register Subtask do
     end
     redirect_back(fallback_location: edit_admin_apartment_path(params[:resource_id]))
   end
-  # 
-  # controller do
-  #   def update
-  #     update! do |format|
-  #       format.html { redirect_to edit_admin_task_path(@subtask.id) }
-  #     end
-  #   end
-  # end
 
   index do
     selectable_column
@@ -43,9 +36,20 @@ ActiveAdmin.register Subtask do
       row :deadline
       row :author
       row :executor
-      row :photos  do
+      row :render_photos  do
         ul class: 'show_element' do
-          task.photos.each do |photo|
+          task.render_photos.each do |photo|
+            span class: 'zoom-gallery' do
+              if photo.variable?
+                link_to (image_tag photo.variant(resize: '100x100!')), rails_blob_path(photo)
+              end
+            end
+          end
+        end
+      end
+      row :customer_photos  do
+        ul class: 'show_element' do
+          task.customer_photos.each do |photo|
             span class: 'zoom-gallery' do
               if photo.variable?
                 link_to (image_tag photo.variant(resize: '100x100!')), rails_blob_path(photo)
@@ -81,10 +85,10 @@ ActiveAdmin.register Subtask do
               as: :select,
               include_blank: false,
               collection: Task.find_each.collect { |u| [ "#{u.name}", u.id ] }
-      f.input :photos, as: :file, input_html: { multiple: true }
-      if f.object.photos.attached?
+      f.input :render_photos, as: :file, input_html: { multiple: true }
+      if f.object.render_photos.attached?
         ul class: 'attached_preview' do
-          f.object.photos.each do |photo|
+          f.object.render_photos.each do |photo|
             div class: 'attached_element' do
               if photo.variable?
                 div class: 'zoom-gallery' do
@@ -99,7 +103,28 @@ ActiveAdmin.register Subtask do
           end
         end
         # span link_to 'Remove checked photos', destroy_multiple_admin_apartments_path(elem_ids: params[:checked_ids], resource_id: f.object.id), method: :delete, class: 'button del_button'
-        span link_to 'Remove all photos', destroy_multiple_admin_tasks_path(elem_ids: f.object.photos.ids, resource_id: f.object.id), method: :delete, class: 'button del_button'
+        span link_to 'Remove all render photos', destroy_multiple_admin_tasks_path(elem_ids: f.object.render_photos.ids, resource_id: f.object.id), method: :delete, class: 'button del_button'
+      end
+
+      f.input :customer_photos, as: :file, input_html: { multiple: true }
+      if f.object.customer_photos.attached?
+        ul class: 'attached_preview' do
+          f.object.customer_photos.each do |photo|
+            div class: 'attached_element' do
+              if photo.variable?
+                div class: 'zoom-gallery' do
+                  li link_to (image_tag(photo.variant(resize: '200x200!'))), rails_blob_path(photo), target: :blank
+                end
+              else
+                li link_to 'Download image', rails_blob_path(photo), target: :blank
+              end
+              # span check_box_tag "checked_ids[]", photo.id, false, class: 'selectable'
+              span link_to 'Remove', delete_elem_admin_task_path(photo.id), method: :delete, data: { confirm: 'Are you sure?' }
+            end
+          end
+        end
+        # span link_to 'Remove checked photos', destroy_multiple_admin_apartments_path(elem_ids: params[:checked_ids], resource_id: f.object.id), method: :delete, class: 'button del_button'
+        span link_to 'Remove all customer photos', destroy_multiple_admin_tasks_path(elem_ids: f.object.customer_photos.ids, resource_id: f.object.id), method: :delete, class: 'button del_button'
       end
 
       f.input :documents, as: :file, input_html: { multiple: true }

@@ -6,8 +6,8 @@ ActiveAdmin.register Room do
                 tasks_attributes: [
                   :id, :name, :description, :status,
                   :_destroy, :tag, :deadline, :author,
-                  :executor, :_destroy, photos: [],
-                  documents: []
+                  :executor, :_destroy, render_photos: [],
+                  customer_photos: [], documents: []
                 ]
 
   member_action :delete_elem, method: :delete do
@@ -22,14 +22,6 @@ ActiveAdmin.register Room do
     end
     redirect_back(fallback_location: edit_admin_room_path(params[:resource_id]))
   end
-
-  # controller do
-  #   def update
-  #     update! do |format|
-  #       format.html { redirect_to edit_admin_room_path(@room.id) }
-  #     end
-  #   end
-  # end
 
   index do
     selectable_column
@@ -190,7 +182,8 @@ ActiveAdmin.register Room do
         ff.input :name
         ff.input :description, as: :text
         ff.input :room, as: :select, include_blank: false, collection: [[ "#{f.object.name}", f.object.id ]]
-        ff.input :photos, as: :file, input_html: { multiple: true }
+        ff.input :render_photos, as: :file, input_html: { multiple: true }
+        ff.input :customer_photos, as: :file, input_html: { multiple: true }
         # div class: 'nested_attrs' do
         #   if ff.object.photos.attached?
         #     ul class: 'attached_preview' do
