@@ -22,13 +22,13 @@ ActiveAdmin.register Task do
     redirect_back(fallback_location: edit_admin_apartment_path(params[:resource_id]))
   end
 
-  controller do
-    def update
-      update! do |format|
-        format.html { redirect_to edit_admin_task_path(@task.id) }
-      end
-    end
-  end
+  # controller do
+  #   def update
+  #     update! do |format|
+  #       format.html { redirect_to edit_admin_task_path(@task.id) }
+  #     end
+  #   end
+  # end
 
   index do
     selectable_column

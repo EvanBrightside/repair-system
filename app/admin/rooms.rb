@@ -23,13 +23,13 @@ ActiveAdmin.register Room do
     redirect_back(fallback_location: edit_admin_room_path(params[:resource_id]))
   end
 
-  controller do
-    def update
-      update! do |format|
-        format.html { redirect_to edit_admin_room_path(@room.id) }
-      end
-    end
-  end
+  # controller do
+  #   def update
+  #     update! do |format|
+  #       format.html { redirect_to edit_admin_room_path(@room.id) }
+  #     end
+  #   end
+  # end
 
   index do
     selectable_column
