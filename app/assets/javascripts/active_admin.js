@@ -9,6 +9,8 @@ $(function() {
 });
 
 $(document).ready(function() {
+  // $(".nested_attrs").appendTo($("#"));
+
 	$('.popup-photos').magnificPopup({
 		delegate: 'a',
 		type: 'image',

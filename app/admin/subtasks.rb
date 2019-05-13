@@ -1,26 +1,8 @@
-ActiveAdmin.register Task do
-  menu parent: "Apartments", priority: 2
+ActiveAdmin.register Subtask do
+  menu parent: "Apartments", priority: 3
   permit_params :name, :description, :status,
-                :tag, :deadline, :author, :executor,
-                :room_id, photos: [], documents: [],
-                subtasks_attributes: [
-                  :id, :name, :description, :status,
-                  :tag, :deadline, :author, :executor,
-                  :_destroy, photos: [], documents: []
-                ]
-
-  member_action :delete_elem, method: :delete do
-    elem = ActiveStorage::Attachment.find(params[:id])
-    elem.purge
-    redirect_back(fallback_location: edit_admin_apartment_path)
-  end
-
-  collection_action :destroy_multiple, method: :delete do
-    ActiveStorage::Attachment.find(params[:elem_ids]).each do |elem|
-      elem.purge
-    end
-    redirect_back(fallback_location: edit_admin_apartment_path(params[:resource_id]))
-  end
+                :deadline, :author, :executor,
+                :task_id, photos: [], documents: []
 
   controller do
     def update
@@ -82,10 +64,10 @@ ActiveAdmin.register Task do
       f.input :deadline, as: :datepicker
       f.input :author
       f.input :executor
-      f.input :room,
+      f.input :task,
               as: :select,
               include_blank: false,
-              collection: Room.find_each.collect { |u| [ "#{u.name}", u.id ] }
+              collection: Task.find_each.collect { |u| [ "#{u.name}", u.id ] }
       f.input :photos, as: :file, input_html: { multiple: true }
       if f.object.photos.attached?
         ul class: 'attached_preview' do
@@ -122,56 +104,6 @@ ActiveAdmin.register Task do
           end
         end
         li link_to 'Remove all documents', destroy_multiple_admin_tasks_path(elem_ids: f.object.documents.ids, resource_id: f.object.id), method: :delete, class: 'button del_button'
-      end
-    end
-
-    f.inputs 'Subtasks' do
-      f.has_many :subtasks, heading: '', allow_destroy: true, new_record: 'Add a subtask' do |ff|
-        ff.input :name
-        ff.input :status
-        ff.input :description, as: :text
-        ff.input :author
-        ff.input :executor
-        ff.input :deadline, as: :datepicker
-        ff.input :task, as: :select, include_blank: false, collection: [[ "#{f.object.name}", f.object.id ]]
-        ff.input :photos, as: :file, input_html: { multiple: true }
-        # div class: 'nested_attrs' do
-        #   if ff.object.photos.attached?
-        #     ul class: 'attached_preview' do
-        #       ff.object.photos.each do |photo|
-        #         div class: 'attached_element' do
-        #           if photo.variable?
-        #             div class: 'zoom-gallery' do
-        #               li link_to (image_tag(photo.variant(resize: '100x100!'))), rails_blob_path(photo), target: :blank
-        #             end
-        #           else
-        #             li link_to 'Download image', rails_blob_path(photo), target: :blank
-        #           end
-        #           span link_to 'Remove', delete_elem_admin_task_path(photo.id), method: :delete, data: { confirm: 'Are you sure?' }
-        #         end
-        #       end
-        #     end
-        #     span link_to 'Remove all photos', destroy_multiple_admin_tasks_path(elem_ids: ff.object.photos.ids, resource_id: ff.object.id), method: :delete, class: 'button del_button'
-        #   end
-        # end
-        ff.input :documents, as: :file, input_html: { multiple: true }
-        # div class: 'nested_attrs' do
-        #   if ff.object.documents.attached?
-        #     ul class: 'attached_preview' do
-        #       ff.object.documents.map do |document|
-        #         div class: 'attached_element' do
-        #           if document.previewable?
-        #             li link_to (image_tag(document.preview(resize: '100x100!'))), rails_blob_path(document), class: 'iframe-popup'
-        #           else
-        #             li link_to 'Download file', rails_blob_path(document), target: :blank
-        #           end
-        #           li link_to 'Remove', delete_elem_admin_task_path(document.id), method: :delete, data: { confirm: 'Are you sure?' }
-        #         end
-        #       end
-        #     end
-        #     li link_to 'Remove all documents', destroy_multiple_admin_tasks_path(elem_ids: ff.object.documents.ids, resource_id: ff.object.id), method: :delete, class: 'button del_button'
-        #   end
-        # end
       end
     end
     f.actions

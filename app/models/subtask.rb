@@ -1,4 +1,4 @@
-class Task < ApplicationRecord
+class Subtask < ApplicationRecord
   extend Enumerize
 
   validates :name, :description, presence: true
@@ -8,7 +8,5 @@ class Task < ApplicationRecord
 
   enumerize :status, in: %i[to_do in_progress done], default: :to_do
 
-  belongs_to :room
-  has_many :subtasks, dependent: :nullify
-  accepts_nested_attributes_for :subtasks, allow_destroy: true
+  belongs_to :task
 end

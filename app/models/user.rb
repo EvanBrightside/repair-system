@@ -4,5 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable,
          :recoverable, :rememberable, :validatable
 
-  validates :email, :password, :password_confirmation, presence: true
+  validates :first_name, :last_name, :email, :password, :password_confirmation, presence: true
+
+  def full_user_name
+    "#{first_name} #{last_name}"
+  end
 end
