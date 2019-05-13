@@ -47,6 +47,8 @@ ActiveAdmin.register Room do
             span class: 'popup-plans' do
               if plan.variable?
                 link_to (image_tag plan.variant(resize: '100x100!')), rails_blob_path(plan)
+              else
+                link_to "Plan №#{plan.id}", rails_blob_path(plan), target: :blank
               end
             end
           end
@@ -54,10 +56,12 @@ ActiveAdmin.register Room do
       end
       row :render_photos  do
         ul class: 'show_element' do
-          room.render_photos.each do |render_photo|
+          room.render_photos.each do |photo|
             span class: 'zoom-gallery' do
-              if render_photo.variable?
-                link_to (image_tag render_photo.variant(resize: '100x100!')), rails_blob_path(render_photo)
+              if photo.variable?
+                link_to (image_tag photo.variant(resize: '100x100!')), rails_blob_path(photo)
+              else
+                link_to "Render photo №#{photo.id}", rails_blob_path(photo), target: :blank
               end
             end
           end
@@ -65,10 +69,12 @@ ActiveAdmin.register Room do
       end
       row :customer_photos  do
         ul class: 'show_element' do
-          room.customer_photos.each do |customer_photo|
+          room.customer_photos.each do |photo|
             span class: 'zoom-gallery' do
-              if customer_photo.variable?
-                link_to (image_tag customer_photo.variant(resize: '100x100!')), rails_blob_path(customer_photo)
+              if photo.variable?
+                link_to (image_tag photo.variant(resize: '100x100!')), rails_blob_path(photo)
+              else
+                link_to "Customer photo №#{photo.id}", rails_blob_path(photo), target: :blank
               end
             end
           end
@@ -80,6 +86,8 @@ ActiveAdmin.register Room do
             span do
               if document.previewable?
                 link_to (image_tag document.preview(resize: '100x100!')), rails_blob_path(document), class: 'iframe-popup'
+              else
+                li link_to 'Download file', rails_blob_path(document), target: :blank
               end
             end
           end

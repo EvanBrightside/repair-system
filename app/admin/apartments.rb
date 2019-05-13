@@ -51,6 +51,8 @@ ActiveAdmin.register Apartment do
             span class: 'zoom-gallery' do
               if photo.variable?
                 link_to (image_tag photo.variant(resize: '100x100!')), rails_blob_path(photo)
+              else
+                link_to "Photo №#{photo.id}", rails_blob_path(photo), target: :blank
               end
             end
           end
@@ -62,6 +64,8 @@ ActiveAdmin.register Apartment do
             span do
               if document.previewable?
                 link_to (image_tag document.preview(resize: '100x100!')), rails_blob_path(document), class: 'iframe-popup'
+              else
+                li link_to 'Download file', rails_blob_path(document), target: :blank
               end
             end
           end
