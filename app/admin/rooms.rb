@@ -189,6 +189,8 @@ ActiveAdmin.register Room do
       f.has_many :tasks, heading: '', allow_destroy: true, new_record: 'Add a task' do |ff|
         ff.input :name
         ff.input :description, as: :text
+        ff.input :author, as: :select, include_blank: false, collection: [[ current_user.full_user_name, current_user.id ]]
+        ff.input :executor, as: :select, include_blank: false, collection: User.find_each.collect { |u| [ "#{u.full_user_name}", u.id ] }
         ff.input :room, as: :select, include_blank: false, collection: [[ "#{f.object.name}", f.object.id ]]
         ff.input :render_photos, as: :file, input_html: { multiple: true }
         ff.input :customer_photos, as: :file, input_html: { multiple: true }

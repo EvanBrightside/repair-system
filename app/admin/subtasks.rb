@@ -24,8 +24,12 @@ ActiveAdmin.register Subtask do
     column :name
     column :status
     column :deadline
-    column :author
-    column :executor
+    column :author do |task|
+      User.find(task.author.to_i).full_user_name unless task.author.empty?
+    end
+    column :executor do |task|
+      User.find(task.executor.to_i).full_user_name unless task.executor.empty?
+    end
     actions
   end
 
@@ -34,8 +38,12 @@ ActiveAdmin.register Subtask do
       row :name
       row :status
       row :deadline
-      row :author
-      row :executor
+      row :author do |task|
+        User.find(task.author.to_i).full_user_name unless task.author.empty?
+      end
+      row :executor do |task|
+        User.find(task.executor.to_i).full_user_name unless task.author.empty?
+      end
       row :render_photos  do
         ul class: 'show_element' do
           task.render_photos.each do |photo|
@@ -80,13 +88,13 @@ ActiveAdmin.register Subtask do
   end
 
   form html: { multipart: true } do |f|
-    f.inputs 'Task' do
+    f.inputs 'Subtask' do
       f.input :name
       f.input :description, as: :text
       f.input :status, include_blank: false
       f.input :deadline, as: :datepicker
-      f.input :author
-      f.input :executor
+      f.input :author, include_blank: false, collection: [[ "#{current_user.full_user_name}", current_user.id ]]
+      f.input :executor, as: :select, include_blank: false, collection: User.find_each.collect { |u| [ "#{u.full_user_name}", u.id ] }
       f.input :task,
               as: :select,
               include_blank: false,

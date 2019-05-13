@@ -8,3 +8,9 @@
             = link_to task.name, admin_task_path(task.id), target: :blank
           div
             = "Status: #{task.status}"
+          div.nextinfo
+            = "Deadline: #{task.deadline}"
+          div.nextinfo
+            - unless task.executor.empty?
+              - executor = User.find(task.executor.to_i).full_user_name
+              = "Executor: #{executor}"
