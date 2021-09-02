@@ -3,7 +3,7 @@ git_source :github do |repo|
   "https://github.com/#{repo}.git"
 end
 
-ruby '2.6.1'
+ruby '2.7.1'
 
 gem 'rails', '~> 5.2.3'
 gem 'pg', '>= 0.18', '< 2.0'
@@ -77,7 +77,6 @@ end
 
 group :production do
   gem 'unicorn'
-  gem 'therubyracer', platforms: :ruby
 end
 
 group :lint do
